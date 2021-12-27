@@ -39,18 +39,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //token endpoints
         http.authorizeRequests().antMatchers("/api/token/login/**", "/api/token/refresh/**").permitAll();
         //userRole endpoints
-        http.authorizeRequests().antMatchers(GET, "/api/role/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers( "/api/role/**").hasAnyAuthority("ROLE_ADMIN");
         //user endpoints
         http.authorizeRequests().antMatchers(GET, "/api/user/lists/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(POST, "/api/user/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers(POST, "/api/user/register/**").hasAnyAuthority("ROLE_ADMIN");
         //Menu endpoints
         http.authorizeRequests().antMatchers("/api/menu/**").hasAnyAuthority("ROLE_ADMIN");
 
-
         http.authorizeRequests().anyRequest().authenticated();
-//        http.authorizeRequests().anyRequest().permitAll();
-        http.addFilter(customAuthenticationFilter); //add filter
-        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class); //add filter
+        http.addFilter(customAuthenticationFilter); //add authentication filter
+        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class); //add authorization filter
     }
 
     @Bean

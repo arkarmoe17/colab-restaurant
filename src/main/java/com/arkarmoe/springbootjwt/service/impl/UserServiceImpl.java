@@ -1,9 +1,10 @@
 package com.arkarmoe.springbootjwt.service.impl;
 
+import com.arkarmoe.springbootjwt.model.entity.Role;
 import com.arkarmoe.springbootjwt.model.entity.User;
+import com.arkarmoe.springbootjwt.model.request.UserReq;
 import com.arkarmoe.springbootjwt.repo.RoleRepo;
 import com.arkarmoe.springbootjwt.repo.UserRepo;
-import com.arkarmoe.springbootjwt.model.request.UserReq;
 import com.arkarmoe.springbootjwt.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * TOKEN
+     * GET TOKEN
      **/
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -50,8 +51,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<User> fetchAllUsers() {
-        return userRepo.findAll();
+    public ResponseEntity<List<User>> fetchAllUsers() {
+        log.info("[START] Fetching all the user lists.");
+        List<User> users = userRepo.findAllByOrderByUsername();
+        log.info("Total element:{}",users.size());
+        log.info("[END] Fetching all the user lists.\n");
+        return ResponseEntity.ok(users);
     }
 
     @Override
@@ -76,8 +81,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ResponseEntity<?> addRoleToUser(Long userId, List<Long> roleIds) {
-        return null;
+    public ResponseEntity<?> assignRolesToUser(Long userId, List<Long> roleIds) {
+        log.info("[START] Assigning the user roles to userId:{}",userId);
+        log.info("Role ids:{}",roleIds);
+        Optional<User> userOptional = userRepo.findById(userId);
+        if(!userOptional.isPresent())
+            return new ResponseEntity<>("User id is not found.",HttpStatus.BAD_REQUEST);
+        User user = userOptional.get();
+        List<Role> roles = new ArrayList<>();
+        for(Long id : roleIds){
+            Optional<Role> roleOptional = roleRepo.findById(id);
+            if(!roleOptional.isPresent())
+                return new ResponseEntity<>("Role id "+id+ " is not found",HttpStatus.BAD_REQUEST);
+            roles.add(roleOptional.get());
+        }
+        log.info("Role lists:{}",roles.size());
+        user.setRoles(roles);
+        userRepo.save(user);
+        log.info("[END] Assigning the user roles to userId:{}\n",userId);
+        return ResponseEntity.ok(user);
     }
 
     @Override
@@ -92,18 +114,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userOptional.get();
     }
 
-//    @Override
-//    public User saveUser(User user) {
-//        log.info("Saving the user: {}",user.getUsername());
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        return userRepo.save(user);
-//    }
-
-//    @Override
-//    public Role saveRole(Role role) {
-//        log.info("Saving role:{}",role.getName());
-//        return roleRepo.save(role);
-//    }
 
 //    @Override
 //    public void addRoleToUser(String username, String roleName) {

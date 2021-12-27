@@ -17,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MenuServiceImpl implements MenuService {
     private final MenuRepo menuRepo;
+
     @Override
     public ResponseEntity<List<Menu>> fetchAllMenuLists() {
         log.info("[START] Fetching all the menu lists.");

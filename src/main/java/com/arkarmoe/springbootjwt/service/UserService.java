@@ -9,12 +9,10 @@ import java.util.List;
  * Created by Arkar on 27-Dec-2021
  * **/
 public interface UserService {
-    List<User> fetchAllUsers();
+    ResponseEntity<List<User>> fetchAllUsers();
     ResponseEntity<?> registerUser(UserReq userReq);
-    ResponseEntity<?> addRoleToUser(Long userId,List<Long> roleIds);
+    ResponseEntity<?> assignRolesToUser(Long userId,List<Long> roleIds);
     ResponseEntity<?> findByUsername(String username);
     User getUser(String username);
-//    User saveUser(User user);
-//    Role saveRole(Role role);
 //    void addRoleToUser(String username,String roleName);
 }

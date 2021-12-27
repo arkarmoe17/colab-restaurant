@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,6 +17,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
     private final RoleRepo roleRepo;
+
+    @Override
+    public ResponseEntity<List<Role>> fetchAllRoles() {
+        log.info("[START] Fetching all the user roles.");
+        List<Role> roles = roleRepo.findAllByOrderByName();
+        log.info("Total element:{}",roles.size());
+        log.info("[END] Fetching all the user roles.\n");
+        return ResponseEntity.ok(roles);
+    }
 
     @Override
     public ResponseEntity<?> createRole(Role role) {

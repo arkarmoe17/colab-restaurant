@@ -2,13 +2,19 @@ package com.arkarmoe.springbootjwt.service;
 
 import com.arkarmoe.springbootjwt.model.Role;
 import com.arkarmoe.springbootjwt.model.User;
+import com.arkarmoe.springbootjwt.request.UserReq;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-
+/**
+ * Created by Arkar on 27-Dec-2021
+ * **/
 public interface UserService {
     List<User> getUsers();
-    User saveUser(User user);
+    ResponseEntity<?> registerUser(UserReq req);
+    ResponseEntity<?> findByUsername(String username);
     User getUser(String username);
-    Role saveRole(Role role);
-    void addRoleToUser(String username,String roleName);
+//    User saveUser(User user);
+//    Role saveRole(Role role);
+//    void addRoleToUser(String username,String roleName);
 }

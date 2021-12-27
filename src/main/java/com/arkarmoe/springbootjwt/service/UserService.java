@@ -12,6 +12,7 @@ public interface UserService {
     ResponseEntity<List<User>> fetchAllUsers();
     ResponseEntity<?> registerUser(UserReq userReq);
     ResponseEntity<?> assignRolesToUser(Long userId,List<Long> roleIds);
+    ResponseEntity<?> assignMenusToUser(Long userId,List<Long> menuIds);
     ResponseEntity<?> findByUsername(String username);
     User getUser(String username);
 //    void addRoleToUser(String username,String roleName);

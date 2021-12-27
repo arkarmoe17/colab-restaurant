@@ -42,5 +42,14 @@ public class UserController {
                                                @RequestBody List<Long> roleIds) {
         return userService.assignRolesToUser(userId, roleIds);
     }
+
+    /**
+     * Assign Menu lists to user
+     * **/
+    @PostMapping("/{userId}/menu")
+    public ResponseEntity<?> assignMenuToUser(@PathVariable("userId")Long userId,
+                                              @RequestBody List<Long> menuIds){
+        return userService.assignMenusToUser(userId,menuIds);
+    }
 }
 

@@ -1,8 +1,10 @@
 package com.arkarmoe.springbootjwt.service.impl;
 
+import com.arkarmoe.springbootjwt.model.entity.Menu;
 import com.arkarmoe.springbootjwt.model.entity.Role;
 import com.arkarmoe.springbootjwt.model.entity.User;
 import com.arkarmoe.springbootjwt.model.request.UserReq;
+import com.arkarmoe.springbootjwt.repo.MenuRepo;
 import com.arkarmoe.springbootjwt.repo.RoleRepo;
 import com.arkarmoe.springbootjwt.repo.UserRepo;
 import com.arkarmoe.springbootjwt.service.UserService;
@@ -28,6 +30,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
+    private final MenuRepo menuRepo;
     private final PasswordEncoder passwordEncoder;
 
     /**
@@ -92,13 +95,34 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         for(Long id : roleIds){
             Optional<Role> roleOptional = roleRepo.findById(id);
             if(!roleOptional.isPresent())
-                return new ResponseEntity<>("Role id "+id+ " is not found",HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Role id "+id+ " is not found.",HttpStatus.BAD_REQUEST);
             roles.add(roleOptional.get());
         }
         log.info("Role lists:{}",roles.size());
         user.setRoles(roles);
         userRepo.save(user);
         log.info("[END] Assigning the user roles to userId:{}\n",userId);
+        return ResponseEntity.ok(user);
+    }
+
+    @Override
+    public ResponseEntity<?> assignMenusToUser(Long userId, List<Long> menuIds) {
+        log.info("[START] Assigning the menu lists to userId:{}",userId);
+        Optional<User> userOptional = userRepo.findById(userId);
+        if(!userOptional.isPresent())
+            return new ResponseEntity<>("User id is not found.",HttpStatus.BAD_REQUEST);
+        User user = userOptional.get();
+        List<Menu> menuList = new ArrayList<>();
+        for(Long id : menuIds){
+            Optional<Menu> menuOptional = menuRepo.findById(id);
+            if(!menuOptional.isPresent())
+                return new ResponseEntity<>("Menu id: "+id+" is not found.",HttpStatus.BAD_REQUEST);
+            menuList.add(menuOptional.get());
+        }
+        log.info("Menu lists:{}",menuList.size());
+        user.setMenus(menuList);
+        userRepo.save(user);
+        log.info("[END] Assigning the menu lists to userId:{}\n",userId);
         return ResponseEntity.ok(user);
     }
 

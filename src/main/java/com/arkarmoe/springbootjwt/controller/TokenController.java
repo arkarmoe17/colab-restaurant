@@ -26,14 +26,18 @@ import java.util.stream.Collectors;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
+/**
+ * Created by Arkar on 27-Dec-2021
+ **/
 @RestController
 @RequestMapping("/api/token")
 @RequiredArgsConstructor
 public class TokenController {
     private final UserService userService;
+
     /**
      * REFRESH TOKEN
-     * **/
+     **/
     @PostMapping("/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);

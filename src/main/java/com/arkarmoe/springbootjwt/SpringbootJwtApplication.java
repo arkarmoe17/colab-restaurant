@@ -26,11 +26,8 @@ public class SpringbootJwtApplication {
             System.out.println("Command line runner is running.");
 //            userService.saveRole(new Role(null,"ROLE_OPERATOR"));
 //            userService.saveRole(new Role(null,"ROLE_ADMIN"));
-
 //            userService.saveUser(new User(null,"Arkar Moe","arkar","1234",new ArrayList<>()));
-
 //            userService.addRoleToUser("arkar","ROLE_USER");
-
         };
     }
 }

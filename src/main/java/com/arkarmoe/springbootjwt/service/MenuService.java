@@ -11,4 +11,6 @@ import java.util.List;
 public interface MenuService {
     ResponseEntity<List<Menu>> fetchAllMenuLists();
     ResponseEntity<?> createMenu(Menu menu);
+    ResponseEntity<?> updateMenu(Long id,Menu menu);
+    ResponseEntity<?> deleteMenu(Long id);
 }

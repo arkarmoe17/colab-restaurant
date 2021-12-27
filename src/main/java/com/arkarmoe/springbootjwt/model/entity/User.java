@@ -1,12 +1,12 @@
 package com.arkarmoe.springbootjwt.model.entity;
 
-import com.arkarmoe.springbootjwt.model.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,4 +21,10 @@ public class User {
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles;
+    @ManyToMany
+    @JoinTable(
+            name = "user_menus",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "menu_id"))
+    List<Menu> menus;
 }

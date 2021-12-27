@@ -76,6 +76,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public ResponseEntity<?> addRoleToUser(Long userId, List<Long> roleIds) {
+        return null;
+    }
+
+    @Override
     public ResponseEntity<?> findByUsername(String username) {
         return null;
     }

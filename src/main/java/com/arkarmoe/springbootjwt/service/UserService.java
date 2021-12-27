@@ -11,6 +11,7 @@ import java.util.List;
 public interface UserService {
     List<User> fetchAllUsers();
     ResponseEntity<?> registerUser(UserReq userReq);
+    ResponseEntity<?> addRoleToUser(Long userId,List<Long> roleIds);
     ResponseEntity<?> findByUsername(String username);
     User getUser(String username);
 //    User saveUser(User user);

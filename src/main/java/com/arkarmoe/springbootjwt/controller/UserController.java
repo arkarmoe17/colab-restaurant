@@ -34,6 +34,14 @@ public class UserController {
         return userService.registerUser(req);
     }
 
+    /**
+     * Assign Role to User
+     * **/
+    @PostMapping("/role/addToUser")
+    public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserForm form) {
+        return ResponseEntity.ok().build();
+    }
+
     /*@PostMapping("/user/save")
     public ResponseEntity<User> saveUser(@RequestBody User user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());

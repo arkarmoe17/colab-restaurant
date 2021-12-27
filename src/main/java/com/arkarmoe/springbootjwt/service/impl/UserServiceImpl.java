@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<User> getUsers() {
+    public List<User> fetchAllUsers() {
         return userRepo.findAll();
     }
 
@@ -65,19 +65,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (userOptional.isPresent())
             return new ResponseEntity<>("Username is already existed.", HttpStatus.BAD_REQUEST);
 
-        //check user roles
-        for (Long roleId : userReq.getRoleIds()) {
-
-        }
-
         User user = new User();
         user.setName(userReq.getName());
         user.setUsername(userReq.getUsername());
         user.setRoles(null);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(userReq.getPassword()));
         userRepo.save(user);
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user").toUriString());
-        log.info("[END] Registering the user.");
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/register").toUriString());
+        log.info("[END] Registering the user.\n");
         return ResponseEntity.created(uri).body(user);
     }
 

@@ -7,9 +7,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 /**
  * Created by Arkar on 27-Dec-2021
@@ -25,15 +23,15 @@ public class UserController {
      * **/
     @GetMapping("/lists")
     public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok().body(userService.getUsers());
+        return ResponseEntity.ok().body(userService.fetchAllUsers());
     }
 
     /**
      * Create User
      * **/
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserReq req){
-        return null;
+    public ResponseEntity<?> registerUser(@RequestBody UserReq req){
+        return userService.registerUser(req);
     }
 
     /*@PostMapping("/user/save")

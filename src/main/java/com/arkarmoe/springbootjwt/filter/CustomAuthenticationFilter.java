@@ -1,5 +1,8 @@
 package com.arkarmoe.springbootjwt.filter;
 
+import com.arkarmoe.springbootjwt.repo.UserRepo;
+import com.arkarmoe.springbootjwt.utility.Constant;
+import com.arkarmoe.springbootjwt.utility.Utils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,38 +21,44 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private final AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
+    private UserRepo userRepo;
 
     //inject with constructor
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
+//    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
+//        this.authenticationManager = authenticationManager;
+//    }
+
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, UserRepo userRepo) {
         this.authenticationManager = authenticationManager;
+        this.userRepo = userRepo;
     }
+
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        log.info("Username is {} | Password is {}", username, password);
+//        log.info("Username is {} | Password is {}", username, password);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-        return authenticationManager.authenticate(authenticationToken);
+        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+        return authentication;
     }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         User user = (User) authentication.getPrincipal();
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+        Algorithm algorithm = Algorithm.HMAC256(Constant.Token.SECRET.getBytes());
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
-                .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                .withClaim(Constant.Token.ROLES, user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
 
         String refresh_token = JWT.create()
@@ -58,9 +67,20 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
-        Map<String, String> tokens = new HashMap<>();
-        tokens.put("access_token", access_token);
-        tokens.put("refresh_token", refresh_token);
+        //take user
+        Optional<com.arkarmoe.springbootjwt.model.entity.User> userOptional = userRepo.findByUsername(user.getUsername());
+        com.arkarmoe.springbootjwt.model.entity.User u = null;
+        if (userOptional.isPresent()) u = userOptional.get();
+
+        Map<String, Object> tokens = new HashMap<>();
+        tokens.put(Constant.Token.ACCESS_TOKEN, access_token);
+        tokens.put(Constant.Token.REFRESH_TOKEN, refresh_token);
+        boolean isAdminRole = new Utils().checkUserHasAdminRole(u); //check adminRole or not
+        if (!isAdminRole){
+            List<String> menuNames = u.getMenus().stream().map(m -> m.getName()).collect(Collectors.toList());
+            tokens.put(Constant.Token.MENU_PERMISSION, menuNames);
+        }
+
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }

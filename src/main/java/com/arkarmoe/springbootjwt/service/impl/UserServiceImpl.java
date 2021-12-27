@@ -19,10 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -41,11 +38,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         //load user information from the database
         Optional<User> userOptional = userRepo.findByUsername(username);
         if (!userOptional.isPresent()) {
-            log.error("[FAIL] User is not found in the database.");
+            log.error("Username:{} is not found in the database.",username);
             throw new UsernameNotFoundException("User is not found in the database.");
-        } else {
-            log.info("[SUCCESS] User is found in the database.");
+        }else{
+            log.info("Username:{} is found in the database.",username);
         }
+
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         userOptional.get().getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
@@ -120,7 +118,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             menuList.add(menuOptional.get());
         }
         log.info("Menu lists:{}",menuList.size());
-        user.setMenus(menuList);
+        user.setMenus((Set<Menu>) menuList);
         userRepo.save(user);
         log.info("[END] Assigning the menu lists to userId:{}\n",userId);
         return ResponseEntity.ok(user);

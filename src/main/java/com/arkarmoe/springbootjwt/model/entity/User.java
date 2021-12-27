@@ -1,5 +1,6 @@
-package com.arkarmoe.springbootjwt.model;
+package com.arkarmoe.springbootjwt.model.entity;
 
+import com.arkarmoe.springbootjwt.model.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

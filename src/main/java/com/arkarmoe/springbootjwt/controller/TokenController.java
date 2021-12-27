@@ -1,7 +1,7 @@
 package com.arkarmoe.springbootjwt.controller;
 
-import com.arkarmoe.springbootjwt.model.Role;
-import com.arkarmoe.springbootjwt.model.User;
+import com.arkarmoe.springbootjwt.model.entity.Role;
+import com.arkarmoe.springbootjwt.model.entity.User;
 import com.arkarmoe.springbootjwt.service.UserService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

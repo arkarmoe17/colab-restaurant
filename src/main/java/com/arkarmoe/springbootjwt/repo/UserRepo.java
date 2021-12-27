@@ -1,6 +1,6 @@
 package com.arkarmoe.springbootjwt.repo;
 
-import com.arkarmoe.springbootjwt.model.User;
+import com.arkarmoe.springbootjwt.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

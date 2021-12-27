@@ -1,4 +1,4 @@
-package com.arkarmoe.springbootjwt.request;
+package com.arkarmoe.springbootjwt.model.request;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

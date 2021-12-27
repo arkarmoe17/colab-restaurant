@@ -1,7 +1,7 @@
 package com.arkarmoe.springbootjwt.service;
 
-import com.arkarmoe.springbootjwt.model.User;
-import com.arkarmoe.springbootjwt.request.UserReq;
+import com.arkarmoe.springbootjwt.model.entity.User;
+import com.arkarmoe.springbootjwt.model.request.UserReq;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

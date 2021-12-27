@@ -1,9 +1,9 @@
 package com.arkarmoe.springbootjwt.service.impl;
 
-import com.arkarmoe.springbootjwt.model.User;
+import com.arkarmoe.springbootjwt.model.entity.User;
 import com.arkarmoe.springbootjwt.repo.RoleRepo;
 import com.arkarmoe.springbootjwt.repo.UserRepo;
-import com.arkarmoe.springbootjwt.request.UserReq;
+import com.arkarmoe.springbootjwt.model.request.UserReq;
 import com.arkarmoe.springbootjwt.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -71,9 +69,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setRoles(null);
         user.setPassword(passwordEncoder.encode(userReq.getPassword()));
         userRepo.save(user);
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/register").toUriString());
+        //URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/register").toUriString());
+        //return ResponseEntity.created(uri).body(user);
         log.info("[END] Registering the user.\n");
-        return ResponseEntity.created(uri).body(user);
+        return ResponseEntity.ok(user);
     }
 
     @Override

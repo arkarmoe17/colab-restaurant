@@ -1,7 +1,7 @@
 package com.arkarmoe.springbootjwt.controller;
 
-import com.arkarmoe.springbootjwt.model.User;
-import com.arkarmoe.springbootjwt.request.UserReq;
+import com.arkarmoe.springbootjwt.model.entity.User;
+import com.arkarmoe.springbootjwt.model.request.UserReq;
 import com.arkarmoe.springbootjwt.service.UserService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class UserController {
      * FETCH ALL USERS
      * **/
     @GetMapping("/lists")
-    public ResponseEntity<List<User>> getUsers() {
+    public ResponseEntity<List<User>> fetchAllUsers() {
         return ResponseEntity.ok().body(userService.fetchAllUsers());
     }
 

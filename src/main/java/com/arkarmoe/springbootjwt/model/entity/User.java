@@ -28,4 +28,5 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "menu_id"))
     private Set<Menu> menus= new HashSet<>();
+    private boolean active;
 }

@@ -36,6 +36,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 @RequiredArgsConstructor
 public class TokenController {
     private final UserService userService;
+    private final Utils utils;
 
     /**
      * REFRESH TOKEN
@@ -63,7 +64,7 @@ public class TokenController {
                 Map<String, Object> tokens = new HashMap<>();
                 tokens.put(Constant.Token.ACCESS_TOKEN, access_token);
                 tokens.put(Constant.Token.REFRESH_TOKEN, refresh_token);
-                boolean isAdminRole = new Utils().checkUserHasAdminRole(user);
+                boolean isAdminRole = utils.checkUserHasAdminRole(user);
                 if(!isAdminRole){
                     List<String> menuNames = user.getMenus().stream().map(m -> m.getName()).collect(Collectors.toList());
                     tokens.put(Constant.Token.MENU_PERMISSION, menuNames);

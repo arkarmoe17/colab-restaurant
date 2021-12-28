@@ -1,11 +1,15 @@
 package com.arkarmoe.springbootjwt.filter;
 
+import com.arkarmoe.springbootjwt.model.entity.Menu;
 import com.arkarmoe.springbootjwt.repo.UserRepo;
 import com.arkarmoe.springbootjwt.utility.Constant;
 import com.arkarmoe.springbootjwt.utility.Utils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,24 +25,22 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
+@NoArgsConstructor
+@Getter @Setter
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
-    private UserRepo userRepo;
-
+    private Utils utils;
     //inject with constructor
 //    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
 //        this.authenticationManager = authenticationManager;
 //    }
-
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, UserRepo userRepo) {
-        this.authenticationManager = authenticationManager;
-        this.userRepo = userRepo;
-    }
-
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -67,19 +69,11 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
-        //take user
-        Optional<com.arkarmoe.springbootjwt.model.entity.User> userOptional = userRepo.findByUsername(user.getUsername());
-        com.arkarmoe.springbootjwt.model.entity.User u = null;
-        if (userOptional.isPresent()) u = userOptional.get();
-
         Map<String, Object> tokens = new HashMap<>();
         tokens.put(Constant.Token.ACCESS_TOKEN, access_token);
         tokens.put(Constant.Token.REFRESH_TOKEN, refresh_token);
-        boolean isAdminRole = new Utils().checkUserHasAdminRole(u); //check adminRole or not
-        if (!isAdminRole){
-            List<String> menuNames = u.getMenus().stream().map(m -> m.getName()).collect(Collectors.toList());
-            tokens.put(Constant.Token.MENU_PERMISSION, menuNames);
-        }
+        List<String> menuList = utils.takeMenuListsOfUser(user.getUsername());
+        if(menuList!=null) tokens.put(Constant.Token.MENU_PERMISSION, menuList);
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);

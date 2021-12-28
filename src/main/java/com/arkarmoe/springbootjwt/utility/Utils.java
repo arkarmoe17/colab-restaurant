@@ -66,8 +66,25 @@ public class Utils {
     /**
      * Active or Inactive the user
      **/
-    public static void activeUserActionStatus(String username, boolean actionBool) {
+    public static boolean checkUserIsActive(String username) {
+        Optional<User> userOptional = userRepo.findByUsername(username);
+        if (!userOptional.isPresent()) return false;
+        User user = userOptional.get();
+        if(user.isActive())return true;
+        return false;
+    }
 
+    /**
+     * Action the user status
+     * **/
+    public static void actionUserStatus(String username,boolean actionBool){
+        Optional<User> userOptional = userRepo.findByUsername(username);
+        if (!userOptional.isPresent()){
+         log.error("Username:{} is not found.\n",username);
+        }
+        User user = userOptional.get();
+        user.setActive(actionBool);
+        userRepo.save(user);
     }
 
 }

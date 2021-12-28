@@ -38,12 +38,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     private AuthenticationManager authenticationManager;
     private Utils utils;
     //inject with constructor
-//    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
-//        this.authenticationManager = authenticationManager;
-//    }
+    /*public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }*/
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        log.info("Authentication is checking.");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 //        log.info("Username is {} | Password is {}", username, password);
@@ -55,6 +56,10 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         User user = (User) authentication.getPrincipal();
+        /** active the user status **/
+        utils.actionUserStatus(user.getUsername(),true);
+
+        /** access token and refresh tokens **/
         Algorithm algorithm = Algorithm.HMAC256(Constant.Token.SECRET.getBytes());
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
@@ -69,6 +74,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
+        /** response **/
         Map<String, Object> tokens = new HashMap<>();
         tokens.put(Constant.Token.ACCESS_TOKEN, access_token);
         tokens.put(Constant.Token.REFRESH_TOKEN, refresh_token);

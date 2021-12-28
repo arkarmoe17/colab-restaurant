@@ -54,6 +54,10 @@ public class TokenController {
 
                 //get user from db
                 User user = userService.getUser(username);
+                /** active the user active status **/
+                utils.actionUserStatus(user.getUsername(),true);
+
+                /** access and refresh tokens **/
                 String access_token = JWT.create()
                         .withSubject(user.getUsername())
                         .withExpiresAt(new Date(System.currentTimeMillis() + Constant.Token.ACCESS_TOKEN_EXPIRE))

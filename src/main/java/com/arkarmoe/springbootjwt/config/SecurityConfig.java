@@ -27,6 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final Utils utils;
+    private final CustomAuthorizationFilter customAuthorizationFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -56,7 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter); //add authentication filter
-        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class); //add authorization filter
+//        http.addFilterBefore(new CustomAuthorizationFilter(utils), UsernamePasswordAuthenticationFilter.class); //add authorization filter
+        http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class); //add authorization filter
     }
 
     @Bean

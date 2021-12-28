@@ -43,7 +43,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 //            log.info("Token is refreshing.");
             filterChain.doFilter(request, response);
         } else {
-            log.info("Authorization is checking.");
+//            log.info("Authorization is checking.");
             String authorizationHeader = request.getHeader(AUTHORIZATION);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
@@ -52,7 +52,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     JWTVerifier jwtVerifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = jwtVerifier.verify(token);
                     String username = decodedJWT.getSubject();
-                    log.info("Decode username:{}",username);
                     String[] roles = decodedJWT.getClaim(Constant.Token.ROLES).asArray(String.class);
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                     stream(roles).forEach(role -> {

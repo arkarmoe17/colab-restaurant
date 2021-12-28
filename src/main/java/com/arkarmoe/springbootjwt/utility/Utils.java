@@ -22,15 +22,12 @@ import java.util.stream.Collectors;
 @Component
 public class Utils {
     private static UserRepo userRepo;
-
     @Autowired
     private UserRepo userRepository;
 
     @PostConstruct
     public void init() {
-        System.out.println("Inside Init method");
         this.userRepo = userRepository;
-        System.out.println("Outside Init method");
     }
 
     /**
@@ -43,12 +40,12 @@ public class Utils {
         for (Role r : userOptional.get().getRoles()) {
             if (r.getName().equals(RoleName.ROLE_ADMIN.name())) {
                 flag = true;
-                break; 
+                break;
             }
         }
         if (flag) return null;
-        else{
-            return userOptional.get().getMenus().stream().map(m -> m.getName()).collect(Collectors.toList());
+        else {
+            return userOptional.get().getMenus().stream().map(Menu::getName).collect(Collectors.toList());
         }
     }
 
@@ -70,21 +67,21 @@ public class Utils {
         Optional<User> userOptional = userRepo.findByUsername(username);
         if (!userOptional.isPresent()) return false;
         User user = userOptional.get();
-        if(user.isActive())return true;
-        return false;
+        return user.isActive();
     }
 
     /**
      * Action the user status
-     * **/
-    public static void actionUserStatus(String username,boolean actionBool){
+     **/
+    public static void actionUserStatus(String username, boolean actionBool) {
         Optional<User> userOptional = userRepo.findByUsername(username);
-        if (!userOptional.isPresent()){
-         log.error("Username:{} is not found.\n",username);
+        if (!userOptional.isPresent()) {
+            log.error("Username:{} is not found.\n", username);
+        } else {
+            User user = userOptional.get();
+            user.setActive(actionBool);
+            userRepo.save(user);
         }
-        User user = userOptional.get();
-        user.setActive(actionBool);
-        userRepo.save(user);
     }
 
 }

@@ -1,14 +1,10 @@
 package com.arkarmoe.springbootjwt.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +22,6 @@ public class User {
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_menus",

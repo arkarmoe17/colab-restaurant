@@ -1,6 +1,7 @@
 package com.arkarmoe.springbootjwt.controller;
 
 import com.arkarmoe.springbootjwt.model.entity.Role;
+import com.arkarmoe.springbootjwt.model.enums.RoleName;
 import com.arkarmoe.springbootjwt.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class RoleController {
 
     //create role
     @PostMapping()
-    public ResponseEntity<?> createRole(@RequestBody Role role) {
+    public ResponseEntity<?> createRole(@RequestParam("roleName") RoleName role) {
         return roleService.createRole(role);
     }
 }

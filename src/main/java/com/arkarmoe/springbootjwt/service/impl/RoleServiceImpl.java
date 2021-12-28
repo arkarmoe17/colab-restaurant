@@ -1,6 +1,7 @@
 package com.arkarmoe.springbootjwt.service.impl;
 
 import com.arkarmoe.springbootjwt.model.entity.Role;
+import com.arkarmoe.springbootjwt.model.enums.RoleName;
 import com.arkarmoe.springbootjwt.repo.RoleRepo;
 import com.arkarmoe.springbootjwt.service.RoleService;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +29,13 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public ResponseEntity<?> createRole(Role role) {
+    public ResponseEntity<?> createRole(RoleName roleName) {
         log.info("[START] Creating the user role.");
-        log.info("Role name:{}", role.getName());
-        Optional<Role> roleOptional = roleRepo.findByName(role.getName());
+        log.info("Role name:{}", roleName.name());
+        Optional<Role> roleOptional = roleRepo.findByName(roleName.name());
         if(roleOptional.isPresent()) return new ResponseEntity<>("Role name is already existed.", HttpStatus.BAD_REQUEST);
+        Role role = new Role();
+        role.setName(roleName.name());
         roleRepo.save(role);
         log.info("[END] Creating the user role.\n");
         return ResponseEntity.ok(role);

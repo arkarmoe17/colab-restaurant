@@ -1,6 +1,7 @@
 package com.arkarmoe.springbootjwt.service;
 
 import com.arkarmoe.springbootjwt.model.entity.Role;
+import com.arkarmoe.springbootjwt.model.enums.RoleName;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -10,5 +11,5 @@ import java.util.List;
  * **/
 public interface RoleService {
     ResponseEntity<List<Role>> fetchAllRoles();
-    ResponseEntity<?> createRole(Role role);
+    ResponseEntity<?> createRole(RoleName role);
 }

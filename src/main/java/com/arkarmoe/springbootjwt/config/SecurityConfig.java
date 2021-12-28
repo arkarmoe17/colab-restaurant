@@ -40,12 +40,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter();
         customAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
         customAuthenticationFilter.setUtils(utils);
-        customAuthenticationFilter.setFilterProcessesUrl("/api/token/login");
+        customAuthenticationFilter.setFilterProcessesUrl("/api/user/login");
 
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         //token endpoints
-        http.authorizeRequests().antMatchers("/api/token/login/**", "/api/token/refresh/**").permitAll();
+        http.authorizeRequests().antMatchers("/api/user/login/**","/api/user/logout/**", "/api/token/refresh/**").permitAll();
         //userRole endpoints
         http.authorizeRequests().antMatchers("/api/role/**").hasAnyAuthority("ROLE_ADMIN");
         //user endpoints

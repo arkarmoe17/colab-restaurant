@@ -1,6 +1,6 @@
 package com.arkarmoe.springbootjwt;
 
-import com.arkarmoe.springbootjwt.service.UserService;
+import com.arkarmoe.springbootjwt.service.RoleService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,13 +21,10 @@ public class SpringbootJwtApplication {
     }
 
     @Bean
-    CommandLineRunner run(UserService userService) {
+    CommandLineRunner run(RoleService roleService) {
         return args -> {
             System.out.println("Command line runner is running.");
-//            userService.saveRole(new Role(null,"ROLE_OPERATOR"));
-//            userService.saveRole(new Role(null,"ROLE_ADMIN"));
-//            userService.saveUser(new User(null,"Arkar Moe","arkar","1234",new ArrayList<>()));
-//            userService.addRoleToUser("arkar","ROLE_USER");
+//            roleService.createRole(RoleName.ROLE_ADMIN);
         };
     }
 }

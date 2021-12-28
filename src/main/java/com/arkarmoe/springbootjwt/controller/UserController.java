@@ -35,6 +35,14 @@ public class UserController {
     }
 
     /**
+     * Logout
+     * **/
+    @PostMapping("/logout/{username}")
+    public ResponseEntity<?> logout(@PathVariable("username")String username){
+        return userService.logoutUser(username);
+    }
+
+    /**
      * Assign Role to User
      **/
     @PostMapping("/{userId}/role")

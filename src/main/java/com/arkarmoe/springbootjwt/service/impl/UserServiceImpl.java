@@ -82,6 +82,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public ResponseEntity<?> logoutUser(String username) {
+        log.info("[START] Logout the user by username:{}",username);
+        Optional<User> userOptional = userRepo.findByUsername(username);
+        if(!userOptional.isPresent())
+            return new ResponseEntity<>("Username is not found.",HttpStatus.BAD_REQUEST);
+        User user = userOptional.get();
+        user.setActive(false);
+        userRepo.save(user);
+        log.info("[END] Logout the user by username:{}\n",username);
+        return ResponseEntity.ok("Success.");
+    }
+
+    @Override
     public ResponseEntity<?> assignRolesToUser(Long userId, List<Long> roleIds) {
         log.info("[START] Assigning the user roles to userId:{}",userId);
         log.info("Role ids:{}",roleIds);
@@ -125,23 +138,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ResponseEntity<?> findByUsername(String username) {
-        return null;
-    }
-
-    @Override
     public User getUser(String username) throws UsernameNotFoundException {
         Optional<User> userOptional = userRepo.findByUsername(username);
         if (!userOptional.isPresent()) throw new UsernameNotFoundException("User is not found in the database.");
         return userOptional.get();
     }
 
-
-//    @Override
-//    public void addRoleToUser(String username, String roleName) {
-//        User user = userRepo.findByUsername(username);
-//        Role role = roleRepo.findByName(roleName);
-//        user.getRoles().add(role);
-//        userRepo.save(user);
-//    }
 }

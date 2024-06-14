@@ -1,32 +1,25 @@
 package com.colab.restaurant.model.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-@Entity
+@Document("users")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
     private String name;
+    private String email;
     private String username;
     private String password;
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Role> roles;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_menus",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "menu_id"))
-    private Set<Menu> menus= new HashSet<>();
+    //    private List<Role> roles;
     private boolean active;
 }

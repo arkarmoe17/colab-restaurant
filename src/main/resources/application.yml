@@ -1,0 +1,18 @@
+server:
+    port: 8083
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/colab-restaurant
+      auto-index-creation: true
+#spring:
+#    datasource:
+#        password: P@ssW0rd
+#        url: jdbc:mysql://localhost:3306/demodb
+#        username: user
+#    jpa:
+#        hibernate:
+#            ddl-auto: update
+#        properties:
+#            hibernate:
+#                dialect: org.hibernate.dialect.MySQL5InnoDBDialect

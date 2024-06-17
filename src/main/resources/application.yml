@@ -1,10 +1,14 @@
 server:
-    port: 8083
+  port: 8083
 spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/colab-restaurant
       auto-index-creation: true
+logging:
+  pattern:
+    dateformat: "dd-MM-yyyy HH:mm:ss.SSS"
+
 #spring:
 #    datasource:
 #        password: P@ssW0rd

@@ -1,10 +1,12 @@
 package com.colab.restaurant.service.impl;
 
+import com.colab.restaurant.exceptions.BadRequestException;
 import com.colab.restaurant.mapper.RestaurantMapper;
 import com.colab.restaurant.model.dto.RestaurantDTO;
 import com.colab.restaurant.model.entity.Restaurant;
 import com.colab.restaurant.repo.RestaurantRepo;
 import com.colab.restaurant.service.RestaurantService;
+import com.colab.restaurant.utility.Constant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,7 +48,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         Optional<Restaurant> restaurantOpt = restaurantRepo.findByShopCode(requestDTO.getShopCode());
         if (restaurantOpt.isPresent()) {
             log.error("Code: {} is already existed in system.", requestDTO.getShopCode());
-            return;
+            throw new BadRequestException(Constant.Message.SHOP_CODE_IS_EXISTED);
         }
         Restaurant restaurant = RestaurantMapper.INSTANCE.toEntity(requestDTO);
         log.info("restaurant name:{} is created successfully.", restaurant.getName());
@@ -61,14 +63,14 @@ public class RestaurantServiceImpl implements RestaurantService {
         Optional<Restaurant> restaurantOpt = restaurantRepo.findById(id);
         if (restaurantOpt.isEmpty()) {
             log.error("Id is not found.");
-            return null;
+            throw new BadRequestException(Constant.Message.ID_NOT_FOUND);
         }
 
         // code is already existed or not
         Optional<Restaurant> restaurantOpt2 = restaurantRepo.findByShopCode(requestDTO.getShopCode());
         if (restaurantOpt2.isPresent() && !restaurantOpt2.get().getId().equals(id)) {
             log.error("Code: {} is already existed in system.", requestDTO.getShopCode());
-            return null;
+            throw new BadRequestException(Constant.Message.SHOP_CODE_IS_EXISTED);
         }
 
         // update

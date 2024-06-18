@@ -1,5 +1,6 @@
 package com.colab.restaurant.service.impl;
 
+import com.colab.restaurant.exceptions.BadRequestException;
 import com.colab.restaurant.mapper.OwnerMapper;
 import com.colab.restaurant.model.dto.OwnerDTO;
 import com.colab.restaurant.model.entity.Owner;
@@ -7,6 +8,7 @@ import com.colab.restaurant.model.entity.Restaurant;
 import com.colab.restaurant.repo.OwnerRepo;
 import com.colab.restaurant.repo.RestaurantRepo;
 import com.colab.restaurant.service.OwnerService;
+import com.colab.restaurant.utility.Constant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,7 @@ public class OwnerServiceImpl implements OwnerService {
         Optional<Restaurant> restaurantOptional = restaurantRepo.findByShopCode(owner.getShopCode());
         if (restaurantOptional.isEmpty()) {
             log.error("Restaurant code: {} is not found.", owner.getShopCode());
-            return;
+            throw new BadRequestException(Constant.Message.SHOP_CODE_NOT_FOUND);
         }
         ownerRepo.save(owner);
     }

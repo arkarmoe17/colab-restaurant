@@ -7,14 +7,13 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(
-        componentModel = "spring"
-)
+@Mapper(componentModel = "spring")
 public interface OwnerMapper {
     OwnerMapper INSTANCE = Mappers.getMapper(OwnerMapper.class);
 
     Owner toEntity(OwnerDTO dto);
 
     OwnerDTO toDto(Owner entity);
-    List<OwnerDTO> toDtos(List<Owner> entities);
+
+    List<OwnerDTO> toDtoList(List<Owner> entities);
 }

@@ -38,6 +38,6 @@ public class OwnerServiceImpl implements OwnerService {
     @Override
     public List<OwnerDTO> findAllByShopCode(String shopCode) {
         log.info("Find all owners by shop code:{}", shopCode);
-        return OwnerMapper.INSTANCE.toDtos(ownerRepo.findAllByShopCodeOrderByName(shopCode));
+        return OwnerMapper.INSTANCE.toDtoList(ownerRepo.findAllByShopCodeOrderByName(shopCode));
     }
 }

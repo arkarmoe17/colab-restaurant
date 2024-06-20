@@ -30,24 +30,7 @@
 //        this.userRepo = userRepository;
 //    }
 //
-//    /**
-//     * Take User Menu lists , except ROLE_ADMIN
-//     **/
-//    public static List<String> takeMenuListsOfUser(String username) {
-//        Optional<User> userOptional = userRepo.findByUsername(username);
-//        if (!userOptional.isPresent()) return null;
-//        boolean flag = false;
-//        for (Role r : userOptional.get().getRoles()) {
-//            if (r.getName().equals(RoleName.ROLE_ADMIN.name())) {
-//                flag = true;
-//                break;
-//            }
-//        }
-//        if (flag) return null;
-//        else {
-//            return userOptional.get().getMenus().stream().map(Menu::getName).collect(Collectors.toList());
-//        }
-//    }
+//
 //
 //    /**
 //     * Check Admin Role or not

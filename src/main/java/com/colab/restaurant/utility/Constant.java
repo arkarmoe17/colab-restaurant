@@ -18,6 +18,9 @@ public interface Constant {
         public static final String SHOP_CODE_IS_EXISTED = "Shop code is already existed.";
         public static final String SHOP_CODE_NOT_FOUND = "Shop code is not found.";
         public static final String ID_NOT_FOUND = "Id is not found.";
+        public static final String TABLE_CODE_IS_EXISTED = "Table code is already existed.";
+        public static final String TABLE_NAME_IS_EXISTED = "Table name is already existed.";
+        public static final String TABLE_CODE_NOT_FOUND = "Table code is not found.";
     }
 
 }

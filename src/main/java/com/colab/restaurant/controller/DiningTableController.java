@@ -19,7 +19,6 @@ import java.util.List;
 public class DiningTableController {
     private final DiningTableService diningTableService;
 
-    // fetching the dining tables
     @Operation(summary = "Fetching the Dining Tables")
     @GetMapping
     public ResponseEntity<List<DiningTableDTO>> fetchingDiningTables(@RequestHeader("shop-code") String shopCode,
@@ -27,7 +26,6 @@ public class DiningTableController {
         return ResponseEntity.ok(diningTableService.fetchingDiningTables(shopCode, isActive));
     }
 
-    // create dining table
     @Operation(summary = "Create Dining Table")
     @PostMapping
     public ResponseEntity<DiningTableDTO> createDiningTable(@RequestBody DiningTableDTO requestDto) {
@@ -35,7 +33,6 @@ public class DiningTableController {
         return ResponseEntity.ok(diningTableService.createDiningTable(diningTable));
     }
 
-    // update dining table
     @Operation(summary = "Update Dining Table")
     @PutMapping
     public ResponseEntity<DiningTableDTO> updateDiningTable(@RequestBody DiningTableDTO requestDto) {

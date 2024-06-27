@@ -19,7 +19,6 @@ import java.util.List;
 public class OwnerController {
     private final OwnerService ownerService;
 
-    // create
     @Operation(summary = "Owner Creation")
     @PostMapping
     public ResponseEntity<Void> createOwner(@RequestBody OwnerDTO dto) {
@@ -28,7 +27,6 @@ public class OwnerController {
         return ResponseEntity.ok().build();
     }
 
-    // find by shop code
     @Operation(summary = "Fetching the owners by shopCode")
     @GetMapping
     public ResponseEntity<List<OwnerDTO>> findAllByShopCode(@RequestHeader("shop-code") String shopCode) {

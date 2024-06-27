@@ -17,21 +17,18 @@ import java.util.List;
 public class RestaurantController {
     private final RestaurantService restaurantService;
 
-    // Fetch Restaurants
     @Operation(summary = "Fetch all the restaurants")
     @GetMapping
     public ResponseEntity<List<RestaurantDTO>> fetchAllRestaurants() {
         return ResponseEntity.ok(restaurantService.fetchAllRestaurants());
     }
 
-    // Fetch Shop Codes
     @Operation(summary = "Fetch all shopCodes")
     @GetMapping("/shopCodes")
     public ResponseEntity<List<String>> fetchAllActiveShopCodes() {
         return ResponseEntity.ok(restaurantService.fetchAllActiveShopCodes());
     }
 
-    // Register Restaurant
     @Operation(summary = "Register the restaurant")
     @PostMapping
     public ResponseEntity<Void> registerRestaurant(@RequestBody RestaurantDTO requestDTO) {

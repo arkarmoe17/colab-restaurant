@@ -24,4 +24,12 @@ public interface Constant {
         public static final String TABLE_CODE_NOT_FOUND = "Table code is not found.";
     }
 
+    class OrderType {
+        public static final String TABLE = "TABLE";
+        public static final String CATEGORIES = "CATEGORIES";
+        public static final String ADMIN_ACC = "ADMIN_ACC";
+        public static final String STAFF_ACC = "STAFF_ACC";
+        public static final String SLIP_NO = "SLIP_NO";
+    }
+
 }

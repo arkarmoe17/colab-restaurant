@@ -10,9 +10,9 @@ public class Quota {
     @Id
     private String id;
     private String shopCode; // ref of restaurant
-    private Integer tableNumber;
-    private Integer categoryNumber;
-    private Integer adminAccNumber;
-    private Integer staffAccNumber;
-    private Integer slipNumber;
+    private int tableNumber;
+    private int categoryNumber;
+    private int adminAccNumber;
+    private int staffAccNumber;
+    private int slipNumber;
 }
